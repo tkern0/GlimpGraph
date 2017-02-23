@@ -40,9 +40,9 @@ def getAverageDay(days):
 
 # The file comes with nul characters which causes problems
 # This removes them
-def fixFile(dir, dir2=None):
-    if not dir2: dir2=dir
-    fi = open(dir, 'rb')
+def fixFile(dir1, dir2=None):
+    if not dir2: dir2=dir1
+    fi = open(dir1, 'rb')
     data = fi.read()
     fi.close()
     fo = open(dir2, 'wb')
@@ -103,22 +103,32 @@ while True:
             for i in checkDays:
                 s, m = getDay(f, i)
                 levels.append(s)
-            avLevels = roundLevels(convertMMOLL(getAverageDay(levels)))
-            plt.plot(avLevels, "r-")
             plt.title("Average of {} to {}".format(firstDay, currentDay))
             plt.xlabel("Part of day (1 = 15m)")
-            if mmolL: plt.ylabel("BGL (mmol/L)")
-            else: plt.ylabel("BGL (mg/dL)")
-            plt.show()
+            if mmolL:
+                plt.ylabel("BGL (mmol/L)")
+                avLevels = roundLevels(convertMMOLL(getAverageDay(levels)))
+            else:
+                plt.ylabel("BGL (mg/dL)")
+                avLevels = roundLevels(getAverageDay(levels))
+            plt.plot(96, meanNone(avLevels), "wo")
+            plt.plot(avLevels, "r-")
         else:
             sDay = day.split("/")
             fDay = sDay[0].zfill(2) + "/" + sDay[1].zfill(2) + "/" + str("20" if len(sDay[2]) == 2 else "") + sDay[2]
             s, m = getDay(f, fDay)
-            s = roundLevels(convertMMOLL(s))
-            plt.plot(s, "r-")
-            plt.plot([i["T"] for i in m], roundLevels(convertMMOLL([i["B"] for i in m])), "ro")
             plt.title(fDay)
-            if mmolL: plt.ylabel("BGL (mmol/L)")
-            else: plt.ylabel("BGL (mg/dL)")
-            plt.show()
+            plt.xlabel("Part of day (1 = 15m)")
+            if mmolL:
+                s = roundLevels(convertMMOLL(s))
+                ml = roundLevels(convertMMOLL([i["B"] for i in m]))
+                plt.ylabel("BGL (mmol/L)")
+            else:
+                s = roundLevels(s)
+                ml = roundLevels([i["B"] for i in m])
+                plt.ylabel("BGL (mg/dL)")
+            plt.plot(s, "r-")
+            plt.plot(96, meanNone(s), "wo")
+            plt.plot([i["T"] for i in m], ml, "ro")
+        plt.show()
     else: print("Invalid input")
