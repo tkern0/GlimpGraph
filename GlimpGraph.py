@@ -119,6 +119,7 @@ while True:
             else:
                 plt.ylabel("BGL (mg/dL)")
                 avLevels = roundLevels(getAverageDay(levels))
+            plt.plot(0, meanNone(s), "wo")
             plt.plot(96, meanNone(avLevels), "wo")
             plt.plot(avLevels, "r-")
         else:
@@ -136,6 +137,7 @@ while True:
                 ml = roundLevels([i["B"] for i in m])
                 plt.ylabel("BGL (mg/dL)")
             plt.plot(s, "r-")
+            plt.plot(0, meanNone(s), "wo")
             plt.plot(96, meanNone(s), "wo")
             plt.plot([i["T"] for i in m], ml, "ro")
         plt.show()
