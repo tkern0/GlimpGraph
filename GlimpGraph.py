@@ -15,10 +15,11 @@ def getDay(dir, day):
             if line.split(";")[1].startswith(day):
                 sLine = line.split(";")
                 if sLine[6] == "0":
+                    # TODO: Make this list nicer for when the graph is plotted
                     meter.append({"T": getDayPart(sLine[1].split(" ")[1]),
-                                  "B": float(sLine[5])})
+                                  "B": safeFloat(sLine[5])})
                 else:
-                    sensor[getDayPart(sLine[1].split(" ")[1][:5])] = float(sLine[5])
+                    sensor[getDayPart(sLine[1].split(" ")[1][:5])] = safeFloat(sLine[5])
     return sensor, meter
 
 # Takes time inputed in the format HH.MM
@@ -70,6 +71,13 @@ def meanNone(l):
     a = [i for i in l if not i == None]
     if not a == []: return sum(a)/len(a)
     else: return None
+
+# Coverts the given number to a float, or None if it doesn't exist
+# For some reason sometimes no value is added in the file, this is to prevent the program crashing
+def safeFloat(n):
+    try: return float(n)
+    except ValueError: return None
+
 # Getting some starting vars
 if len(argv) < 2:
     print("Input the location of 'GlicemiaMisurazioni.csv'")
@@ -111,6 +119,7 @@ while True:
             else:
                 plt.ylabel("BGL (mg/dL)")
                 avLevels = roundLevels(getAverageDay(levels))
+            plt.plot(0, meanNone(s), "wo")
             plt.plot(96, meanNone(avLevels), "wo")
             plt.plot(avLevels, "r-")
         else:
@@ -128,6 +137,7 @@ while True:
                 ml = roundLevels([i["B"] for i in m])
                 plt.ylabel("BGL (mg/dL)")
             plt.plot(s, "r-")
+            plt.plot(0, meanNone(s), "wo")
             plt.plot(96, meanNone(s), "wo")
             plt.plot([i["T"] for i in m], ml, "ro")
         plt.show()
