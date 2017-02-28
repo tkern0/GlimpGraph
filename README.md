@@ -8,6 +8,7 @@ This assumes you already have Glimp setup to read from your sensor.
 1. Connect your phone to your PC as a media device  
 
 2. Browse to the phone, and from the base directory copy the file 'GlicemiaMisurazioni.csv' elsewhere on your PC
+   Make sure not to use the same file, the program makes it unreadable by Glimp
 
 3. Download the latest release of this program from [here](https://github.com/tkern0/GlimpGraph/releases).  
    This is a single .exe which you can store anywhere.
@@ -30,7 +31,7 @@ This assumes you already have Glimp setup to read from your sensor.
 
 2. Get access to the file on your PC.  
    The specific file you want is 'GlicemiaMisurazioni.csv'.  
-   This program slightly modifies the file, so it is probably best to copy it elsewhere before running it.  
+   Make sureto copy the file elsewhere, the program makes it unreadable by Glimp 
    You have two options here.
    1. Log into Dropbox [here](https://www.dropbox.com), and every time you want to use this download the file.
    2. Download and install the Dropbox desktop app from [here](https://www.dropbox.com/download). This will automatically sync the files whenever they are updated.
