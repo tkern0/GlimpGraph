@@ -83,7 +83,7 @@ if len(argv) < 2:
     print("Input the location of 'GlicemiaMisurazioni.csv'")
     f = input("> ")
 else: f = argv[1]
-while not os.path.isfile(f) and os.path.basename(f) == "GlicemiaMisurazioni.csv":
+while not os.path.isfile(f) and os.path.basename(f) in ("GlicemiaMisurazioni.csv", "GlicemiaWearMisurazioni.csv"):
     print("Incorrect file or file does not exist")
     f = input("GlicemiaMisurazioni.csv location: ")
 fixFile(f)
