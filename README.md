@@ -52,7 +52,7 @@ Merges data from an Android smartwatch with data from your phone
 1. Obtain 'GlicemiaMisurazioni.csv' following the instructions above
 2. Download and install [ADB](http://lifehacker.com/the-easiest-way-to-install-androids-adb-and-fastboot-to-1586992378)
 3. Connect your smartwatch straight to your PC
-4. Open command prompt and run 'adb pull /storage/sdcard0/GlicemiaWearMisurazioni.csv'. This will copy this file to 'C:\Users\[your username]'
+4. Open command prompt and run 'adb pull /storage/sdcard0/GlicemiaWearMisurazioni.csv'. This will copy this file to 'C:\Users\\[your username]'
 6. Copy 'GlicemiaMisurazioni.csv' and 'GlicemiaWearMisurazioni.csv' to the same folder as 'WearMerge.exe'
 7. Run WearMerge.exe
 This will create a new file called 'Merged.csv'. You can rename this to 'GlicemiaMisurazioni.csv' and upload it to dropbox/replace the file on your phone to get any data that did not sync.
