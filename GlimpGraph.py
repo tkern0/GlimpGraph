@@ -12,14 +12,15 @@ def getDay(dir, day):
     sensor, meter = [None for i in range(96)], []
     with open(dir) as f:
         for line in f:
-            if line.split(";")[1].startswith(day):
-                sLine = line.split(";")
-                if sLine[6] == "0":
-                    # TODO: Make this list nicer for when the graph is plotted
-                    meter.append({"T": getDayPart(sLine[1].split(" ")[1]),
-                                  "B": safeFloat(sLine[5])})
-                else:
-                    sensor[getDayPart(sLine[1].split(" ")[1][:5])] = safeFloat(sLine[5])
+            if not line in ("modified", "\n"):
+                if line.split(";")[1].startswith(day):
+                    sLine = line.split(";")
+                    if sLine[6] == "0":
+                        # TODO: Make this list nicer for when the graph is plotted
+                        meter.append({"T": getDayPart(sLine[1].split(" ")[1]),
+                                      "B": safeFloat(sLine[5])})
+                    else:
+                        sensor[getDayPart(sLine[1].split(" ")[1][:5])] = safeFloat(sLine[5])
     return sensor, meter
 
 # Takes time inputed in the format HH.MM
@@ -42,13 +43,16 @@ def getAverageDay(days):
 # The file comes with nul characters which causes problems
 # This removes them
 def fixFile(dir1, dir2=None):
-    if not dir2: dir2=dir1
-    fi = open(dir1, 'rb')
+    fi = open(dir1, "rb")
     data = fi.read()
     fi.close()
-    fo = open(dir2, 'wb')
-    fo.write(data.replace(b'\x00', b''))
-    fo.close()
+    # Just to save a bit of time, the files can get very long
+    if not data[-8:] == "modified":
+        if not dir2: dir2=dir1
+        fo = open(dir2, "wb")
+        fo.write(data.replace(b"\x00", b""))
+        fo.write(b"modified")
+        fo.close()
 
 # Coverts from mg/dL to mmoL/L
 def convertMMOLL(levels):
@@ -119,7 +123,7 @@ while True:
             else:
                 plt.ylabel("BGL (mg/dL)")
                 avLevels = roundLevels(getAverageDay(levels))
-            plt.plot(0, meanNone(s), "wo")
+            plt.plot(0, meanNone(avLevels), "wo")
             plt.plot(96, meanNone(avLevels), "wo")
             plt.plot(avLevels, "r-")
         else:
